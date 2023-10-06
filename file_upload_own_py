@@ -1,0 +1,23 @@
+import boto3
+from pprint import pprint
+import csv
+aws_console = boto3.Session(profile_name="default")
+ec2_instance = aws_console.resource('ec2')
+header_csv = ['S_NO','inst_id','ip_address_private','ip_address_public','tag_values']
+S_No=1
+file_open = open("second.csv","w",newline='')
+open_path = csv.writer(file_open)
+open_path.writerow(header_csv)
+for i in ec2_instance.instances.all():
+    # pprint(dir(i))
+    # break
+    boot = i.boot_mode
+    inst_id = i.instance_id
+    tag_values = [tag['Value'] for tag in i.tags]
+    ip_address_private = i.private_ip_address
+    ip_address_public = i.public_ip_address
+    sg_groups = [sg['GroupId'] for sg in i.security_groups]
+    print(S_No,ip_address_private,ip_address_public,inst_id,tag_values)
+    open_path.writerow([S_No,ip_address_private,ip_address_public,inst_id,tag_values])
+    S_No=S_No+1
+file_open.close()
