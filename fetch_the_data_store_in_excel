@@ -1,0 +1,21 @@
+import boto3
+from pprint import pprint
+import csv
+aws_console = boto3.Session(profile_name="default")
+ec2_res = aws_console.resource('ec2')
+ec2_cli = aws_console.client('ec2')
+header_for_csv=['S_No','Instance_ID','Instance_type']
+S_No=1
+file_open = open("first.csv","w", newline='')
+csv_w = csv.writer(file_open)
+csv_w.writerow(header_for_csv)
+for karthik in ec2_res.instances.all():
+    # pprint(dir(karthik)) This is to list all the details of the EC2_INSTANCES
+    # break
+    inst_id = karthik.instance_id
+    ins_type = karthik.instance_type
+    print(S_No,ins_type,inst_id)
+    csv_w.writerow([S_No,ins_type,inst_id])
+    S_No=S_No+1
+file_open.close()
+
