@@ -6,9 +6,7 @@ file_path = input("Enter the file name: ")
 try:
     with open(file_path, 'r') as file:
         file_content = file.read()
-    # Use re.sub to replace the pattern with the replacement
     modified_content = re.sub(pattern, replacement, file_content)
-    # Open the file for writing and overwrite its content with the modified content
     with open(file_path, 'w') as file:
         file.write(modified_content)
     if modified_content == file_content:
